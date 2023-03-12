@@ -7,6 +7,8 @@ icon: /icon/docker.png
 
 # coder-python-pg
 
+Depends on [coder-python](https://github.com/abulte/coder-python).
+
 ## Getting started
 
 Run `coder templates push` from this directory.
