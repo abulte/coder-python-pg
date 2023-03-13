@@ -34,25 +34,12 @@ resource "docker_volume" "db_volume" {
   lifecycle {
     ignore_changes = all
   }
-  # Add labels in Docker to keep track of orphan resources.
-  # TODO: move this into a block and output from parent module
-  labels {
-    label = "coder.owner"
-    value = module.coder_python.coder_workspace_data.owner
-  }
-  labels {
-    label = "coder.owner_id"
-    value = module.coder_python.coder_workspace_data.owner_id
-  }
-  labels {
-    label = "coder.workspace_id"
-    value = module.coder_python.coder_workspace_data.id
-  }
-  # This field becomes outdated if the workspace is renamed but can
-  # be useful for debugging or cleaning out dangling volumes.
-  labels {
-    label = "coder.workspace_name_at_creation"
-    value = module.coder_python.coder_workspace_data.name
+  dynamic "labels" {
+    for_each = module.coder_python.common_labels
+    content {
+      label = labels.value.label
+      value = labels.value.value
+    }
   }
 }
 
